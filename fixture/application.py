@@ -1,14 +1,13 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from PythonForTester.fixture.session import SessionHelper
+
 
 class Application:
-    def __init__ (self):
+    def __init__(self):
         self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(60)
-
-    def logout(self):
-        # разлогиниваемся
-        self.driver.find_element(By.LINK_TEXT, "Logout").click()
+        self.session = SessionHelper(self)
 
     def return_to_group_page(self):
         # возвращаемся на страницу групп
@@ -32,14 +31,6 @@ class Application:
     def open_group_page(self):
         # переходим на вкладку группы
         self.driver.find_element(By.LINK_TEXT, "groups").click()
-
-    def login(self, username, password):
-        # логинимся
-        self.open_home_page()
-        self.driver.find_element(By.NAME, "user").click()
-        self.driver.find_element(By.NAME, "user").send_keys(username)
-        self.driver.find_element(By.NAME, "pass").send_keys(password)
-        self.driver.find_element(By.CSS_SELECTOR, "input:nth-child(7)").click()
 
     def open_home_page(self):
         # открывается главная страница
