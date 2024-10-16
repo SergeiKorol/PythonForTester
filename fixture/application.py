@@ -1,5 +1,4 @@
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from PythonForTester.fixture.session import SessionHelper
 from PythonForTester.fixture.group import GroupHelper
 
@@ -11,7 +10,12 @@ class Application:
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
 
-
+    def is_valid(self):
+        try:
+            self.driver.current_url
+            return True
+        except:
+            return False
 
     def open_home_page(self):
         # открывается главная страница
