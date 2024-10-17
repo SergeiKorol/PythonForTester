@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from PythonForTester.model.group import Group
 
 class GroupHelper:
     def __init__(self, app):
@@ -30,6 +31,8 @@ class GroupHelper:
             self.app.driver.find_element(By.NAME, field_name).send_keys(text)
 
     def open_group_page(self):
+        if self.app.driver.current_url.endswith("/group.php") and len(self.app.driver.find_elements(By.NAME, "new")) > 0:
+            return
         # переходим на вкладку группы
         self.app.driver.find_element(By.LINK_TEXT, "groups").click()
 
@@ -55,3 +58,17 @@ class GroupHelper:
         # logout
         self.return_to_group_page()
 
+    def count(self):
+        self.open_group_page()
+        return len(self.app.driver.find_elements(By.NAME, "selected[]"))
+
+    def get_groups_list(self):
+        self.open_group_page()
+        groups = []
+        for element in self.app.driver.find_elements(By.CSS_SELECTOR, "span.group"):
+            text = element.text
+            id_element = element.find_elements(By.NAME, "selected[]")
+            if id_element:  # Проверяем, что список не пуст
+                id = id_element[0].get_attribute("value")
+            groups.append(Group(name=text, id=id))
+        return groups
