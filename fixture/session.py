@@ -22,7 +22,10 @@ class SessionHelper:
         self.app.driver.find_element(By.CSS_SELECTOR, "input:nth-child(7)").click()
 
     def is_logged_in_as(self, username):
-        return self.app.driver.find_element(By.XPATH, "//div/div[1]/form/b").text == "(" + username + ")"
+        return self.get_logged_user() == username
+
+    def get_logged_user(self):
+        return self.app.driver.find_element(By.XPATH, "//div/div[1]/form/b").text[1:-1]
 
     def is_logged_in(self):
         return len(self.app.driver.find_elements(By.LINK_TEXT, "Logout")) > 0
